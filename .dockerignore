@@ -1,0 +1,24 @@
+# .dockerignore - exclude files not needed in Docker build context
+.git
+.gitignore
+*.log
+*.sqlite3
+*.sqlite3-journal
+db/*.db
+db/*.db-journal
+log/
+tmp/
+vendor/
+.bundle/
+.ruby-version
+.ruby-gemset
+*.gem
+*.lock
+README.md
+*.md
+fly.toml
+Dockerfile
+.dockerignore
+*.swp
+*~
+.DS_Store

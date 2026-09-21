@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoFlow</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a href="/veiculos" class="brand">
+        <span class="brand-mark">A</span>
+        <span><strong>Auto</strong><em>FLOW</em></span>
+      </a>
+      <nav class="nav">
+        <a href="/veiculos" class="nav-link active"><span>▦</span> Visão geral</a>
+        <a href="/veiculos/novo" class="nav-link"><span>＋</span> Adicionar veículo</a>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="dot"></span>
+        Sistema local
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">GESTÃO DE GARAGEM</p>
+          <h1>Seu inventário, em ordem.</h1>
+        </div>
+        <a href="/veiculos/novo" class="btn btn-primary">+ Adicionar veículo</a>
+      </header>
+      <%= yield %>
+      
+    </main>
+  </div>
+</body>
+</html>

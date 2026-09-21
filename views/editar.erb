@@ -1,0 +1,22 @@
+<a href="/veiculos/<%= @veiculo['id'] %>" class="back-link">← Voltar para o veículo</a>
+<section class="form-page">
+  <div class="form-heading"><p class="eyebrow">EDIÇÃO · #<%= @veiculo['id'] %></p><h2><%= @veiculo['marca'] %> <%= @veiculo['modelo'] %></h2><p>Atualize os dados e o status deste veículo.</p></div>
+  <% if @erros %><div class="error-box"><strong>Revise os dados:</strong><ul><% @erros.each { |erro| %><li><%= erro %></li><% } %></ul></div><% end %>
+  <form action="/veiculos/<%= @veiculo['id'] %>" method="post" class="vehicle-form">
+    <input type="hidden" name="_method" value="put">
+    <div class="section-label">Identificação</div>
+    <div class="form-grid">
+      <div class="field"><label>Marca</label><input name="marca" value="<%= @veiculo['marca'] %>" required></div>
+      <div class="field"><label>Modelo</label><input name="modelo" value="<%= @veiculo['modelo'] %>" required></div>
+      <div class="field"><label>Ano</label><input type="number" name="ano" value="<%= @veiculo['ano'] %>" required min="1900" max="2200"></div>
+      <div class="field"><label>Placa</label><input name="placa" value="<%= @veiculo['placa'] %>" required maxlength="7"></div>
+      <div class="field"><label>Quilometragem</label><input type="number" name="quilometragem" value="<%= @veiculo['quilometragem'] %>" required min="0"></div>
+      <div class="field"><label>Cor</label><input name="cor" value="<%= @veiculo['cor'] %>"></div>
+      <div class="field"><label>Tipo</label><select name="tipo"><% ['Carro','Moto','Caminhonete','SUV','Van','Outro'].each do |tipo| %><option <%= 'selected' if @veiculo['tipo'] == tipo %>><%= tipo %></option><% end %></select></div>
+      <div class="field"><label>Status</label><select name="status"><% ['Disponível','Em manutenção','Vendido'].each do |status| %><option <%= 'selected' if @veiculo['status'] == status %>><%= status %></option><% end %></select></div>
+      <div class="field field--wide"><label>Proprietário</label><input name="proprietario" value="<%= @veiculo['proprietario'] %>"></div>
+      <div class="field field--wide"><label>Observações</label><textarea name="observacoes" rows="4"><%= @veiculo['observacoes'] %></textarea></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-primary" type="submit">Salvar alterações</button><a href="/veiculos/<%= @veiculo['id'] %>" class="btn btn-ghost">Cancelar</a></div>
+  </form>
+</section>

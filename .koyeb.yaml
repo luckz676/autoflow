@@ -1,0 +1,28 @@
+# .koyeb.yaml - Koyeb deployment config for AutoFlow
+# Deploy via Koyeb web UI: connect GitHub repo, it auto-detects this file
+
+ports:
+  - port: 8080
+    protocol: http
+    routes:
+      - path: /
+
+env:
+  - name: RACK_ENV
+    value: production
+  - name: PORT
+    value: "8080"
+  - name: DATABASE_PATH
+    value: "/tmp/garagem.db"  # ephemeral - resets on each deploy
+
+build:
+  docker:
+    dockerfile: Dockerfile
+
+# Instance type: free tier (512MB RAM, 0.1 vCPU)
+# No persistent volumes on free tier
+instance_type: nano
+
+# Auto-deploy on push to main
+git:
+  branch: main

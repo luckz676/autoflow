@@ -1,0 +1,14 @@
+<a href="/veiculos" class="back-link">← Voltar para veículos</a>
+<section class="detail-hero">
+  <div class="detail-car">🚘</div>
+  <div><p class="eyebrow">VEÍCULO #<%= @veiculo['id'] %></p><h2><%= @veiculo['marca'] %> <%= @veiculo['modelo'] %></h2><p><%= @veiculo['tipo'] %> · <%= @veiculo['ano'] %> · <%= @veiculo['cor'].to_s.empty? ? 'Cor não informada' : @veiculo['cor'] %></p></div>
+  <span class="badge badge--<%= @veiculo['status'].downcase.gsub(' ', '-').gsub('ã', 'a') %>"><%= @veiculo['status'] %></span>
+</section>
+<section class="detail-grid">
+  <article class="detail-card"><span>Placa</span><strong class="plate large"><%= @veiculo['placa'] %></strong></article>
+  <article class="detail-card"><span>Quilometragem</span><strong><%= @veiculo['quilometragem'] %> km</strong></article>
+  <article class="detail-card"><span>Proprietário</span><strong><%= @veiculo['proprietario'].to_s.empty? ? 'Não informado' : @veiculo['proprietario'] %></strong></article>
+  <article class="detail-card"><span>Cadastrado em</span><strong><%= formatar_data(@veiculo['criado_em']) %></strong></article>
+</section>
+<section class="panel detail-notes"><div class="panel-head"><div><h2>Observações</h2><p>Informações adicionais deste veículo.</p></div></div><p class="notes"><%= @veiculo['observacoes'].to_s.empty? ? 'Nenhuma observação registrada.' : @veiculo['observacoes'] %></p></section>
+<div class="detail-actions"><a class="btn btn-primary" href="/veiculos/<%= @veiculo['id'] %>/editar">Editar veículo</a><form action="/veiculos/<%= @veiculo['id'] %>" method="post" onsubmit="return confirm('Remover este veículo da garagem?');"><input type="hidden" name="_method" value="delete"><button class="btn btn-danger" type="submit">Excluir</button></form></div>

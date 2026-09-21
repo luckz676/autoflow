@@ -1,0 +1,59 @@
+<% if @mensagem %>
+  <div class="toast success"><span>✓</span><%= @mensagem %></div>
+<% end %>
+
+<section class="stats-grid">
+  <article class="stat-card stat-card--main"><span class="stat-label">VEÍCULOS</span><strong><%= @total %></strong><small>No inventário</small></article>
+  <article class="stat-card"><span class="stat-label">DISPONÍVEIS</span><strong><%= @disponiveis %></strong><small>Prontos para uso</small></article>
+  <article class="stat-card"><span class="stat-label">MANUTENÇÃO</span><strong><%= @manutencao %></strong><small>Na oficina</small></article>
+  <article class="stat-card"><span class="stat-label">VENDIDOS</span><strong><%= @vendidos %></strong><small>Fora do inventário ativo</small></article>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>Veículos cadastrados</h2>
+      <p>Pesquise e acompanhe sua frota.</p>
+    </div>
+  </div>
+
+  <form action="/veiculos" method="get" class="filters">
+    <div class="search-box"><span>⌕</span><input type="text" name="busca" value="<%= @busca %>" placeholder="Marca, modelo, placa ou proprietário"></div>
+    <select name="status">
+      <option value="">Todos os status</option>
+      <% ['Disponível', 'Em manutenção', 'Vendido'].each do |status| %>
+        <option value="<%= status %>" <%= 'selected' if @status == status %>><%= status %></option>
+      <% end %>
+    </select>
+    <button class="btn btn-dark" type="submit">Filtrar</button>
+    <% unless @busca.empty? && @status.empty? %><a href="/veiculos" class="clear-link">Limpar</a><% end %>
+  </form>
+
+  <% if @veiculos.empty? %>
+    <div class="empty-state">
+      <div class="empty-icon">🚘</div>
+      <h3>Nenhum veículo encontrado</h3>
+      <p><%= @busca.empty? && @status.empty? ? 'Sua garagem ainda está vazia.' : 'Tente ajustar os filtros de pesquisa.' %></p>
+      <a href="/veiculos/novo" class="btn btn-primary">Adicionar veículo</a>
+    </div>
+  <% else %>
+    <div class="table-wrap">
+      <table class="vehicle-table">
+        <thead><tr><th>VEÍCULO</th><th>PLACA</th><th>ANO</th><th>KM</th><th>STATUS</th><th>PROPRIETÁRIO</th><th></th></tr></thead>
+        <tbody>
+          <% @veiculos.each do |v| %>
+            <tr>
+              <td><a href="/veiculos/<%= v['id'] %>" class="vehicle-name"><span class="car-avatar">🚗</span><span><strong><%= v['marca'] %> <%= v['modelo'] %></strong><small><%= v['tipo'] %> · <%= v['cor'].to_s.empty? ? 'Cor não informada' : v['cor'] %></small></span></a></td>
+              <td><span class="plate"><%= v['placa'] %></span></td>
+              <td><%= v['ano'] %></td>
+              <td><%= number_with_delimiter = v['quilometragem'].to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1.').reverse %> km</td>
+              <td><span class="badge badge--<%= v['status'].downcase.gsub(' ', '-').gsub('ã', 'a') %>"><%= v['status'] %></span></td>
+              <td><%= v['proprietario'].to_s.empty? ? '—' : v['proprietario'] %></td>
+              <td><div class="row-actions"><a href="/veiculos/<%= v['id'] %>">Ver</a><a href="/veiculos/<%= v['id'] %>/editar">Editar</a><form action="/veiculos/<%= v['id'] %>" method="post" onsubmit="return confirm('Remover este veículo da garagem?');"><input type="hidden" name="_method" value="delete"><button type="submit">Excluir</button></form></div></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</section>

@@ -1,0 +1,21 @@
+<a href="/veiculos" class="back-link">← Voltar para veículos</a>
+<section class="form-page">
+  <div class="form-heading"><p class="eyebrow">NOVO REGISTRO</p><h2>Adicionar veículo</h2><p>Cadastre os dados principais do veículo para acompanhar sua garagem.</p></div>
+  <% if @erros %><div class="error-box"><strong>Revise os dados:</strong><ul><% @erros.each { |erro| %><li><%= erro %></li><% } %></ul></div><% end %>
+  <form action="/veiculos" method="post" class="vehicle-form">
+    <div class="section-label">Identificação</div>
+    <div class="form-grid">
+      <div class="field"><label>Marca</label><input name="marca" value="<%= @veiculo['marca'] %>" required placeholder="Ex.: Toyota"></div>
+      <div class="field"><label>Modelo</label><input name="modelo" value="<%= @veiculo['modelo'] %>" required placeholder="Ex.: Corolla"></div>
+      <div class="field"><label>Ano</label><input type="number" name="ano" value="<%= @veiculo['ano'] %>" required min="1900" max="2200"></div>
+      <div class="field"><label>Placa</label><input name="placa" value="<%= @veiculo['placa'] %>" required placeholder="ABC1D23" maxlength="7"></div>
+      <div class="field"><label>Quilometragem</label><input type="number" name="quilometragem" value="<%= @veiculo['quilometragem'] %>" required min="0"></div>
+      <div class="field"><label>Cor</label><input name="cor" value="<%= @veiculo['cor'] %>" placeholder="Ex.: Preto"></div>
+      <div class="field"><label>Tipo</label><select name="tipo"><% ['Carro','Moto','Caminhonete','SUV','Van','Outro'].each do |tipo| %><option <%= 'selected' if @veiculo['tipo'] == tipo %>><%= tipo %></option><% end %></select></div>
+      <div class="field"><label>Status</label><select name="status"><% ['Disponível','Em manutenção','Vendido'].each do |status| %><option <%= 'selected' if @veiculo['status'] == status %>><%= status %></option><% end %></select></div>
+      <div class="field field--wide"><label>Proprietário</label><input name="proprietario" value="<%= @veiculo['proprietario'] %>" placeholder="Nome do proprietário"></div>
+      <div class="field field--wide"><label>Observações</label><textarea name="observacoes" rows="4" placeholder="Histórico, acessórios, detalhes importantes..."><%= @veiculo['observacoes'] %></textarea></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-primary" type="submit">Salvar veículo</button><a href="/veiculos" class="btn btn-ghost">Cancelar</a></div>
+  </form>
+</section>
