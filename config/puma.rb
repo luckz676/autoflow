@@ -21,14 +21,10 @@ preload_app!
 # Worker timeout - generous for SQLite operations
 worker_timeout 60
 
-# Pidfile and state
-pidfile ENV.fetch("PIDFILE", "tmp/pids/server.pid")
-state_path ENV.fetch("STATE_PATH", "tmp/pids/puma.state")
-
 # Silent startup
 quiet
 
-# Run garbage collection between requests
+# Run garbage collection between requests (on_worker_boot works in single mode)
 on_worker_boot do
   GC.start if defined?(GC)
 end
