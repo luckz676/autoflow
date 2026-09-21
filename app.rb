@@ -7,13 +7,9 @@ set :public_folder, File.join(File.dirname(__FILE__), 'public')
 set :views, File.join(File.dirname(__FILE__), 'views')
 set :method_override, true
 set :erb, trim: '>'
-set :sessions, true
-set :session_secret, ENV.fetch('SESSION_SECRET', 'autoflow-local-session-secret-change-me')
 
-LOGIN_USER = ENV.fetch('AUTOFLOW_USER', 'admin')
-LOGIN_PASSWORD = ENV.fetch('AUTOFLOW_PASSWORD', 'admin123')
-
-DB_PATH = File.join(File.dirname(__FILE__), 'db', 'garagem.db')
+# Database path - configurable via ENV for deployment (Fly.io volume mount)
+DB_PATH = ENV.fetch('DATABASE_PATH', File.join(File.dirname(__FILE__), 'db', 'garagem.db'))
 
 def db_connection
   db = SQLite3::Database.new(DB_PATH)
@@ -38,16 +34,7 @@ db_connection.execute <<-SQL
   );
 SQL
 
-before do
-  next if request.path == '/login' || request.path.start_with?('/style.css')
-  redirect '/login' unless session[:authenticated]
-end
-
 helpers do
-  def autenticado?
-    session[:authenticated] == true
-  end
-
   def formatar_data(data_str)
     return '' unless data_str
     Time.parse(data_str).strftime('%d/%m/%Y %H:%M')
@@ -69,27 +56,7 @@ helpers do
 end
 
 get '/' do
-  redirect autenticado? ? '/veiculos' : '/login'
-end
-
-get '/login' do
-  redirect '/veiculos' if autenticado?
-  @erro_login = params[:erro] == '1'
-  erb :login, layout: false
-end
-
-post '/login' do
-  if params[:usuario].to_s == LOGIN_USER && params[:senha].to_s == LOGIN_PASSWORD
-    session[:authenticated] = true
-    redirect '/veiculos'
-  end
-
-  redirect '/login?erro=1'
-end
-
-post '/logout' do
-  session.clear
-  redirect '/login'
+  redirect '/veiculos'
 end
 
 get '/veiculos' do
